@@ -5,7 +5,7 @@ DESCRIPTION="Webserver running Stable Fast 3D"
 SERVICE_NAME="sf3dai"
 
 # Python interpreter
-PYTHON="python3.13"
+PYTHON="python3.11"
 MAIN_FILE="main.py"
 VENV_PATH="venv"
 
