@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Service file details
-DESCRIPTION="Webserver running Stable Diffusion"
-SERVICE_NAME="diffusionai"
+DESCRIPTION="Webserver running Stable Fast 3D"
+SERVICE_NAME="sf3dai"
 
 # Python interpreter
-PYTHON="python3.11"
+PYTHON="python3.13"
 MAIN_FILE="main.py"
 VENV_PATH="venv"
 
@@ -15,6 +15,9 @@ if [ $? -ne 0 ]; then
   echo "Failed to build venv!"
 fi
 
+# Extra: Clone the SF3D repository into sf3d/
+git clone https://github.com/Stability-AI/stable-fast-3d.git sf3d/
+
 # Switch to the venv
 source $VENV_PATH/bin/activate
 
@@ -23,6 +26,9 @@ $PYTHON -m pip install -U pip
 
 # Install dependencies
 $PYTHON -m pip install -r requirements.txt
+
+# Extra: Install the SF3D requirements
+$PYTHON -m pip install -r sf3d/requirements.txt
 
 # Generate run.sh
 cat <<END > run.sh
