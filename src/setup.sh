@@ -28,7 +28,9 @@ $PYTHON -m pip install -U pip
 $PYTHON -m pip install -r requirements.txt
 
 # Extra: Install the SF3D requirements
+cd sf3d
 $PYTHON -m pip install -r sf3d/requirements.txt
+cd ..
 
 # Generate run.sh
 cat <<END > run.sh
