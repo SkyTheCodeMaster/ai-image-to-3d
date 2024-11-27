@@ -9,17 +9,11 @@ if TYPE_CHECKING:
   from logging import Logger
   from aiohttp import ClientSession
 
-  from asyncpg import Connection, Pool
-
 class Application(BaseApplication):
-  pool: Pool
   LOG: Logger
   cs: ClientSession
-  POSTGRES_ENABLED: bool
 
 class Request(BaseRequest):
   app: Application
-  conn: Connection
-  pool: Pool
   LOG: Logger
   session: ClientSession

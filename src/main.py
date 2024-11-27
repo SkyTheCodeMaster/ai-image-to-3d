@@ -7,7 +7,6 @@ import os
 import tomllib
 
 import aiohttp
-import asyncpg
 import coloredlogs
 import uvloop
 from aiohttp import web
@@ -49,34 +48,14 @@ app = web.Application(
     pg_pool_middleware
   ]
 )
-api_app = web.Application(
-  logger = CustomWebLogger(LOG),
-  middlewares=[
-    pg_pool_middleware
-  ]
-)
   
 
 async def startup():
   try:
-    app.POSTGRES_ENABLED = config["postgresql"]["enabled"]
-    api_app.POSTGRES_ENABLED = config["postgresql"]["enabled"]
-
-    if config["postgresql"]["enabled"]:
-      pool = await asyncpg.create_pool(
-        config["postgresql"]["url"],
-        password=config["postgresql"]["password"]
-      )
-
-      app.pool = pool
-      api_app.pool = pool
-
     session = aiohttp.ClientSession()
     app.cs = session
-    api_app.cs = session
 
     app.LOG = LOG
-    api_app.LOG = LOG
     disabled_cogs: list[str] = []
 
     for cog in [
@@ -88,18 +67,9 @@ async def startup():
         LOG.info(f"Loading {cog}...")
         try:
           lib = get_module(f"api.{cog}")
-          await lib.setup(api_app)
+          await lib.setup(app)
         except Exception:
           LOG.exception(f"Failed to load cog {cog}!")
-
-    app.add_subapp("/api/", api_app)
-
-    LOG.info("Loading frontend...")
-    try:
-      lib = get_module("frontend.routes")
-      await lib.setup(app)
-    except Exception:
-      LOG.exception("Failed to load frontend!")
 
     # If we're running as the daemon, we dont need to serve.
     runner = web.AppRunner(app)

@@ -22,7 +22,7 @@ with open("config.toml") as f:
 limiter = Limiter(exempt_ips=exempt_ips)
 routes = web.RouteTableDef()
 
-@routes.get("/srv/get/")
+@routes.get("/api/srv/get/")
 @limiter.limit("60/m")
 async def get_lp_get(request: Request) -> Response:
   packet = {
@@ -36,7 +36,7 @@ async def get_lp_get(request: Request) -> Response:
 
   return web.json_response(packet)
 
-@routes.post("/sf3d/")
+@routes.post("/api/sf3d/")
 @limiter.limit("10/m")
 async def post_sf3d(request: Request) -> Response:
   png_bytes = await request.read()

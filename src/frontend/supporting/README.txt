@@ -1,1 +1,0 @@
-This is where supplementary templates, like navbars, or footers, should live.

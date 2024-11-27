@@ -1,1 +1,0 @@
-This is where static files like images, js, css, and other various assets should live.
